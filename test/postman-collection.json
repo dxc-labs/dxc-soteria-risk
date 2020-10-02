@@ -1,0 +1,681 @@
+{
+	"info": {
+		"_postman_id": "4da36e40-b8cd-4545-a75f-63f6e5fcaf55",
+		"name": "Soteria - Risk Profile Engine",
+		"description": "Based on the Input Parameters, Response from the ML Model has been classified as Green, Amber, Red",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Risk Profile (Green)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a728e323-74a9-4ee9-b5db-d57770e94f1c",
+						"exec": [
+							"pm.test(request.name+\": \"+\"General Response Check\", function () { \r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response must be valid and have a body\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response should have body message\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.expect(pm.response.json()).to.have.property(\"body\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instances\": [\r\n    {\r\n      \"features\": [\r\n        {\r\n          \"temperature\": \"Normal\",\r\n          \"spo2\": \"> 93\",\r\n          \"travelHistory\": \"Yes\",\r\n          \"positiveContact\": \"No\",\r\n          \"symptoms\": [\r\n            \"Shortness of Breath\",\r\n            \"Chest Pain/ pressure\",\r\n            \"Sore Throat\",\r\n            \"Fatigue\",\r\n            \"Aches and pain\",\r\n            \"Headache\",\r\n            \"Stuffy/ runny Nose\",\r\n            \"Vomiting\",\r\n            \"Diarrhea\",\r\n            \"Sneezing\"\r\n          ],\r\n          \"overallHealthStatus\": \"Improved\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{API_BASE_URL}}/risk/classification?x-api-key={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"risk",
+						"classification"
+					],
+					"query": [
+						{
+							"key": "x-api-key",
+							"value": "{{API_KEY}}"
+						}
+					]
+				},
+				"description": "Sample for Green Risk Profile categorization"
+			},
+			"response": []
+		},
+		{
+			"name": "Risk Profile (Amber)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9b142928-3cae-4f97-b133-62b63c6a81cb",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "53d378d8-7c11-433b-b8f5-abc36dd07ed4",
+						"exec": [
+							"pm.test(request.name+\": \"+\"General Response Check\", function () { \r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response must be valid and have a body\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response should have body message\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.expect(pm.response.json()).to.have.property(\"body\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instances\": [\r\n    {\r\n      \"features\": [\r\n        {\r\n          \"temperature\": \"Severe\",\r\n          \"spo2\": \"90 to 93\",\r\n          \"travelHistory\": \"No\",\r\n          \"positiveContact\": \"No\",\r\n          \"symptoms\": [\r\n            \"Dry Cough\",\r\n            \"Chest Pain/ pressure\",\r\n            \"Confusion/ problems thinking\",\r\n            \"Sore Throat\",\r\n            \"Fatigue\",\r\n            \"Aches and Pain\",\r\n            \"Headache\",\r\n            \"Vomiting\",\r\n            \"Diarrhea\",\r\n            \"Sneezing\"\r\n          ],\r\n          \"overallHealthStatus\": \"Declined\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{API_BASE_URL}}/risk/classification?x-api-key={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"risk",
+						"classification"
+					],
+					"query": [
+						{
+							"key": "x-api-key",
+							"value": "{{API_KEY}}"
+						}
+					]
+				},
+				"description": "Sample for Amber Risk Profile categorization"
+			},
+			"response": []
+		},
+		{
+			"name": "Risk Profile (Red)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9614956e-56ea-41af-8eb6-8c6e571ab0d5",
+						"exec": [
+							"pm.test(request.name+\": \"+\"General Response Check\", function () { \r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response must be valid and have a body\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response should have body message\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.expect(pm.response.json()).to.have.property(\"body\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instances\": [\r\n    {\r\n      \"features\": [\r\n        {\r\n          \"temperature\": \"Severe\",\r\n          \"spo2\": \"90 to 93\",\r\n          \"travelHistory\": \"No\",\r\n          \"positiveContact\": \"Yes\",\r\n          \"symptoms\": [\r\n            \"Dry Cough\",\r\n            \"Shortness of Breath\",\r\n            \"Sore Throat\",\r\n            \"Fatigue\",\r\n            \"Aches and pain\",\r\n            \"Loss of appetite/ smell\",\r\n            \"Headache\",\r\n            \"Diarrhea\"\r\n          ],\r\n          \"overallHealthStatus\": \"Declined\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{API_BASE_URL}}/risk/classification?x-api-key={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"risk",
+						"classification"
+					],
+					"query": [
+						{
+							"key": "x-api-key",
+							"value": "{{API_KEY}}"
+						}
+					]
+				},
+				"description": "Sample for Red Risk Profile categorization"
+			},
+			"response": []
+		},
+		{
+			"name": "Risk Profile (No Symptoms)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fc6c836a-d5b3-4ad8-a4c2-f753f424fdc7",
+						"exec": [
+							"pm.test(request.name+\": \"+\"General Response Check\", function () { \r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response must be valid and have a body\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response should have body message\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.expect(pm.response.json()).to.have.property(\"body\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instances\": [\r\n    {\r\n      \"features\": [\r\n        {\r\n          \"temperature\": \"Normal\",\r\n          \"spo2\": \"> 93\",\r\n          \"travelHistory\": \"Yes\",\r\n          \"positiveContact\": \"No\",\r\n          \"symptoms\": [\r\n          ],\r\n          \"overallHealthStatus\": \"Improved\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{API_BASE_URL}}/risk/classification?x-api-key={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"risk",
+						"classification"
+					],
+					"query": [
+						{
+							"key": "x-api-key",
+							"value": "{{API_KEY}}"
+						}
+					]
+				},
+				"description": "Sample for a request with no symptoms"
+			},
+			"response": []
+		},
+		{
+			"name": "Risk Profile (All Symptoms)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "067ee531-2963-48f9-9c8b-6002b92679ab",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3aaa0817-1ce6-48ea-ba4a-5c929e3d234e",
+						"exec": [
+							"pm.test(request.name+\": \"+\"General Response Check\", function () { \r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response must be valid and have a body\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response should have body message\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.expect(pm.response.json()).to.have.property(\"body\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instances\": [\r\n    {\r\n      \"features\": [\r\n        {\r\n          \"temperature\": \"Severe\",\r\n          \"spo2\": \"90 to 93\",\r\n          \"travelHistory\": \"No\",\r\n          \"positiveContact\": \"No\",\r\n          \"symptoms\": [\r\n            \"Dry Cough\",\r\n            \"Chest Pain/ pressure\",\r\n            \"Confusion/ problems thinking\",\r\n            \"Sore Throat\",\r\n            \"Shortness of Breath\",\r\n            \"Bluish lips/ face\",\r\n            \"Fatigue\",\r\n            \"Aches and Pain\",\r\n            \"Headache\",\r\n            \"Vomiting\",\r\n            \"Diarrhea\",\r\n            \"Sneezing\",\r\n            \"Loss of appetite/ smell\",\r\n            \"Stuffy/ runny Nose\"\r\n          ],\r\n          \"overallHealthStatus\": \"Declined\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{API_BASE_URL}}/risk/classification?x-api-key={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"risk",
+						"classification"
+					],
+					"query": [
+						{
+							"key": "x-api-key",
+							"value": "{{API_KEY}}"
+						}
+					]
+				},
+				"description": "Sample for a request with all possible symptoms"
+			},
+			"response": []
+		},
+		{
+			"name": "Risk Profile (All Necessary Keys Plus Key(s) Of No Interest)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ec29f0c3-f539-4a45-b53b-4a76ac227a57",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c6a1614b-6982-4664-b62e-a6b1a416ccb1",
+						"exec": [
+							"pm.test(request.name+\": \"+\"General Response Check\", function () { \r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response must be valid and have a body\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response should have body message\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.expect(pm.response.json()).to.have.property(\"body\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instances\": [\r\n    {\r\n      \"features\": [\r\n        {\r\n          \"temperature\": \"Severe\",\r\n          \"spo2\": \"90 to 93\",\r\n          \"travelHistory\": \"No\",\r\n          \"positiveContact\": \"No\",\r\n          \"symptoms\": [\r\n            \"Dry Cough\",\r\n            \"Chest Pain/ pressure\",\r\n            \"Confusion/ problems thinking\",\r\n            \"Sore Throat\",\r\n            \"Shortness of Breath\",\r\n            \"Bluish lips/ face\",\r\n            \"Fatigue\",\r\n            \"Aches and Pain\",\r\n            \"Headache\",\r\n            \"Vomiting\",\r\n            \"Diarrhea\",\r\n            \"Sneezing\",\r\n            \"Loss of appetite/ smell\",\r\n            \"Stuffy/ runny Nose\"\r\n          ],\r\n          \"overallHealthStatus\": \"Declined\",\r\n          \"keyOfNoInterest\": \"not considered\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{API_BASE_URL}}/risk/classification?x-api-key={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"risk",
+						"classification"
+					],
+					"query": [
+						{
+							"key": "x-api-key",
+							"value": "{{API_KEY}}"
+						}
+					]
+				},
+				"description": "Sample for a request all necessary keys plus key(s) of no interest"
+			},
+			"response": []
+		},
+		{
+			"name": "Risk Profile (Keys Missing)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d4c11643-f152-42ba-9f08-91eb7b87cb89",
+						"exec": [
+							"pm.test(request.name+\": \"+\"General Response Check\", function () { \r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response must be valid and have a body\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response should have body message\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.expect(pm.response.json()).to.have.property(\"body\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instances\": [\r\n    {\r\n      \"features\": [\r\n        {          \r\n          \"spo2\": \"90 to 93\",\r\n          \"travelHistory\": \"No\",\r\n          \"positiveContact\": \"Yes\",         \r\n          \"symptoms\": [\r\n            \"Dry Cough\", \"Shortness of Breath\", \"Sore Throat\", \"Fatigue\",\r\n            \"Aches and pain\", \"Loss of appetite/ smell\", \"Headache\", \"Diarrhea\"\r\n          ],\r\n          \"overallHealthStatus\": \"Declined\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{API_BASE_URL}}/risk/classification?x-api-key={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"risk",
+						"classification"
+					],
+					"query": [
+						{
+							"key": "x-api-key",
+							"value": "{{API_KEY}}"
+						}
+					]
+				},
+				"description": "Sample for a request with missing keys"
+			},
+			"response": []
+		},
+		{
+			"name": "Risk Profile (Invalid Key Value)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "81a3c2ba-69d6-4086-853c-81b09be2ed5a",
+						"exec": [
+							"pm.test(request.name+\": \"+\"General Response Check\", function () { \r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response must be valid and have a body\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response should have body message\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.expect(pm.response.json()).to.have.property(\"body\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instances\": [\r\n    {\r\n      \"features\": [\r\n        {\r\n          \"month\": \"January\",\r\n          \"spo2\": \"90 to 93\",\r\n          \"travelHistory\": \"No\",\r\n          \"positiveContact\": \"Yes\",\r\n          \"symptoms\": [\r\n            \"Dry Cough \",\r\n            \"Shortness of Breath\",\r\n            \"Sore Throat\",\r\n            \"Fatigue\",\r\n            \"Aches and pain\",\r\n            \"Loss of appetite/ smell\",\r\n            \"Headache\",\r\n            \"Diarrhea\"\r\n          ],\r\n          \"overallHealthStatus\": \"Declined\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{API_BASE_URL}}/risk/classification?x-api-key={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"risk",
+						"classification"
+					],
+					"query": [
+						{
+							"key": "x-api-key",
+							"value": "{{API_KEY}}"
+						}
+					]
+				},
+				"description": "Sample for a request with invalid key values"
+			},
+			"response": []
+		},
+		{
+			"name": "Risk Profile (Invalid Symptoms)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5d69a7ec-884e-4856-b79a-b9e8ac415d7c",
+						"exec": [
+							"pm.test(request.name+\": \"+\"General Response Check\", function () { \r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response must be valid and have a body\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							"pm.test(request.name+\": \"+\"Response should have body message\", function () {\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.expect(pm.response.json()).to.have.property(\"body\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instances\": [\r\n    {\r\n      \"features\": [\r\n        {\r\n          \"temperature\": \"Severe\",\r\n          \"spo2\": \"90 to 93\",\r\n          \"travelHistory\": \"No\",\r\n          \"positiveContact\": \"Yes\",\r\n          \"symptoms\": [\r\n            \"Dry Cough\",\r\n            \"Shortness of Breath\",\r\n            \"Sore Throat\",\r\n            \"Fatigue\",\r\n            \"Aches and pain\",\r\n            \"Loss of appetite/ smell\",\r\n            \"Headache\",\r\n            \"Diarrhea\",\r\n            \"Stomach Ache\"\r\n          ],\r\n          \"overallHealthStatus\": \"Declined\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{API_BASE_URL}}/risk/classification?x-api-key={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"risk",
+						"classification"
+					],
+					"query": [
+						{
+							"key": "x-api-key",
+							"value": "{{API_KEY}}"
+						}
+					]
+				},
+				"description": "Sample for a request with symptoms that are invalid/ that are not recognized by the system"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7f72cf3a-7bf1-47c7-9a2b-423972fcd5d0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "32bd64b3-0fae-4946-b482-2dfb83c3633e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

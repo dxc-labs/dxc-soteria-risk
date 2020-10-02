@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Soteria Risk Stack  
+
+Resources:
+
+  ComponentApi:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: api.yaml
+      Parameters:
+        StackName: !Sub "${AWS::StackName}"       
+        EndpointName:
+          Fn::GetAtt: [ComponentModels, Outputs.EndpointName]        
+        ApiDomainName:                  
+          Fn::ImportValue: !Join
+            - '-'
+            - - !Select [0, !Split ['-', !Ref AWS::StackName]]
+              - !Select [1, !Split ['-', !Ref AWS::StackName]]
+              - !Select [2, !Split ['-', !Ref AWS::StackName]]
+              - 'api-domainName'
+
+  ComponentModels:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: model.yaml
+      Parameters:
+        StackName: !Sub "${AWS::StackName}"        
+
+Outputs:
+
+  EndpointId:
+    Value:
+      Fn::GetAtt: [ComponentModels, Outputs.EndpointId]
+    Export:
+      Name: !Sub "${AWS::StackName}-EndpointId"
+  EndpointName:
+    Value:
+      Fn::GetAtt: [ComponentModels, Outputs.EndpointName]
+    Export:
+      Name: !Sub "${AWS::StackName}-EndpointName"
+  ApiEndpoint:
+    Value:
+      Fn::GetAtt: [ComponentApi, Outputs.ApiEndpoint]
+    Export:
+      Name: !Sub "${AWS::StackName}-api"
